@@ -1,1 +1,14 @@
-[]
+[
+    {
+        "name": "ohio",
+        "id": "02e239dc-27c7-4a23-b208-6b2c088f891c"
+    },
+    {
+        "name": "Richmond",
+        "id": "590f53c1-88d0-4674-8a5a-ba39b1b0ab6c"
+    },
+    {
+        "name": "New York",
+        "id": "5aa2de62-be1b-4d56-a47e-115a055c2435"
+    }
+]
