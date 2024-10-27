@@ -122,7 +122,7 @@ class WeatherService {
     const currentWeather = this.mapToWeather(current);
     const forecastArray = this.generateForecastArray(forecast.list, currentWeather);
 
-    await historyService.addCity(city);
+    await historyService.addCityIfNotExists(city);
 
     return [currentWeather, ...forecastArray];
   }

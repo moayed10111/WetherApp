@@ -6,34 +6,49 @@ class City {
 }
 
 class HistoryService {
-  private readonly DB_URL = `${process.cwd()}/db/db.json`;
+  private readonly DB_PATH = `${process.cwd()}/db/db.json`;
 
-  private async read(): Promise<City[]> {
-    const weatherData = await readFile(this.DB_URL, 'utf-8');
-    return JSON.parse(weatherData) || [];
-  }
-
-  private async write(cities: City[]): Promise<void> {
-    await writeFile(this.DB_URL, JSON.stringify(cities, null, 4), 'utf-8');
-  }
-
-  async getCities(): Promise<City[]> {
-    return this.read();
-  }
-
-  async addCity(name: string): Promise<void> {
-    const cities = await this.read();
-    if (!cities.some(city => city.name === name)) {
-      cities.push(new City(name));
-      await this.write(cities);
+  // Load the city data from the JSON file
+  private async loadCities(): Promise<City[]> {
+    try {
+      const data = await readFile(this.DB_PATH, 'utf-8');
+      return JSON.parse(data) || [];
+    } catch (error) {
+      console.error('Error reading cities from database:', error);
+      return [];
     }
   }
 
-  async removeCity(id: string): Promise<void> {
-    const cities = await this.read();
-    const updatedCities = cities.filter(city => city.id !== id);
-    if (updatedCities.length !== cities.length) {
-      await this.write(updatedCities);
+  // Save the city data to the JSON file
+  private async saveCities(cities: City[]): Promise<void> {
+    try {
+      await writeFile(this.DB_PATH, JSON.stringify(cities, null, 4), 'utf-8');
+    } catch (error) {
+      console.error('Error writing cities to database:', error);
+    }
+  }
+
+  // Retrieve all cities from the database
+  async getAllCities(): Promise<City[]> {
+    return this.loadCities();
+  }
+
+  // Add a new city if it doesn't already exist in the database
+  async addCityIfNotExists(name: string): Promise<void> {
+    const cities = await this.loadCities();
+    if (!cities.some(city => city.name === name)) {
+      cities.push(new City(name));
+      await this.saveCities(cities);
+    }
+  }
+
+  // Remove a city by its ID
+  async deleteCityById(id: string): Promise<void> {
+    const cities = await this.loadCities();
+    const filteredCities = cities.filter(city => city.id !== id);
+
+    if (filteredCities.length !== cities.length) {
+      await this.saveCities(filteredCities);
     }
   }
 }

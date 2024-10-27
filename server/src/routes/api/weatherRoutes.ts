@@ -10,13 +10,13 @@ router.post('/', async(req, res) => {
 });
 
 router.get('/history', async (_req, res) => {
-  const cities = await HistoryService.getCities();
+  const cities = await HistoryService.getAllCities();
   res.status(200).send(cities);
 });
 
 router.delete('/history/:id', async (req, res) => {
   const id = req.params.id;
-  await HistoryService.removeCity(id);
+  await HistoryService.deleteCityById(id);
   res.status(202).send();
 });
 

@@ -10,5 +10,13 @@
     {
         "name": "New York",
         "id": "5aa2de62-be1b-4d56-a47e-115a055c2435"
+    },
+    {
+        "name": "Texas",
+        "id": "f9bc0120-27b6-4f93-9b8a-712a81c3cac7"
+    },
+    {
+        "name": "Austin",
+        "id": "5afaacc4-cebb-47dc-b166-edff771c7204"
     }
 ]
